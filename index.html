@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Critical Theory Resource Hub</title>
+    <style>
+        :root {
+            --color-primary: #2180a0;
+            --color-primary-hover: #1d6b8b;
+            --color-bg: #f5f5f2;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-secondary: #666666;
+            --color-hooks: #f5e6f0;
+            --color-foucault: #f0e8f8;
+            --color-gramsci: #e8f4f8;
+            --color-hall: #e8f8f0;
+            --color-marcuse: #f8f0e8;
+            --color-border: #ddd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a3a42 0%, #2c5a68 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Category Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        /* Category Card */
+        .category-card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+        }
+
+        .category-card.hooks {
+            border-color: #c8619d;
+        }
+
+        .category-card.foucault {
+            border-color: #9C27B0;
+        }
+
+        .category-card.gramsci {
+            border-color: #2196F3;
+        }
+
+        .category-card.hall {
+            border-color: #4CAF50;
+        }
+
+        .category-card.marcuse {
+            border-color: #FF9800;
+        }
+
+        .category-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #ddd 0%, #999 100%);
+        }
+
+        .category-content {
+            padding: 25px;
+        }
+
+        .category-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4em;
+            color: var(--color-text);
+        }
+
+        .category-content p {
+            margin: 0;
+            font-size: 0.95em;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Expanded Resources Section */
+        .resources-section {
+            display: none;
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .resources-section.active {
+            display: block;
+        }
+
+        .resources-section h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--color-text);
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--color-primary-hover);
+        }
+
+        /* Resource List */
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .resource-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--color-bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .resource-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .resource-item h4 {
+            margin: 0 0 8px 0;
+            color: var(--color-text);
+            font-size: 1.05em;
+        }
+
+        .resource-type {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .resource-item p {
+            margin: 8px 0;
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .resource-item a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-text);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .resources-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎓 Critical Theory Resource Hub</h1>
+        <p>Explore essential thinkers and concepts for understanding power, ideology, and social transformation</p>
+    </header>
+
+    <div class="container">
+        <!-- Categories Grid -->
+        <div class="categories-grid">
+            <!-- bell hooks -->
+            <div class="category-card hooks" onclick="showResources('hooks')">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1765123373/search_images/d37f651861dcda10432e770d86d29dd5f40f015f.jpg" alt="bell hooks" class="category-image">
+                <div class="category-content">
+                    <h3>bell hooks</h3>
+                    <p>Intersectionality & Love as Radical Practice</p>
+                </div>
+            </div>
+
+            <!-- Michel Foucault -->
+            <div class="category-card foucault" onclick="showResources('foucault')">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1763025379/search_images/c88884f2e586abd10839bfd26379a01981d2d99e.jpg" alt="Michel Foucault" class="category-image">
+                <div class="category-content">
+                    <h3>Michel Foucault</h3>
+                    <p>Power, Knowledge & Discipline</p>
+                </div>
+            </div>
+
+            <!-- Antonio Gramsci -->
+            <div class="category-card gramsci" onclick="showResources('gramsci')">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1765124253/search_images/0edbea173a7048b904ac6bb58d311c760912264d.jpg" alt="Antonio Gramsci" class="category-image">
+                <div class="category-content">
+                    <h3>Antonio Gramsci</h3>
+                    <p>Cultural Hegemony & Common Sense</p>
+                </div>
+            </div>
+
+            <!-- Stuart Hall -->
+            <div class="category-card hall" onclick="showResources('hall')">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1763470375/search_images/7f175463ac453c40a527c53fab705832981c6470.jpg" alt="Stuart Hall" class="category-image">
+                <div class="category-content">
+                    <h3>Stuart Hall</h3>
+                    <p>Representation & Cultural Studies</p>
+                </div>
+            </div>
+
+            <!-- Herbert Marcuse -->
+            <div class="category-card marcuse" onclick="showResources('marcuse')">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1763107823/search_images/21c0dfad436d439789fcbe941ea9a7b35c3faa9a.jpg" alt="Herbert Marcuse" class="category-image">
+                <div class="category-content">
+                    <h3>Herbert Marcuse</h3>
+                    <p>One-Dimensional Society & Culture Industry</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Sections -->
+
+        <!-- bell hooks Resources -->
+        <div id="hooks-resources" class="resources-section">
+            <h2>
+                bell hooks: Intersectionality & Love as Radical Practice
+                <button class="close-btn" onclick="closeResources()">Close</button>
+            </h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>Remembering bell hooks & Her Critique of "Imperialist White Supremacist Heteropatriarchy"</h4>
+                    <p>Democracy Now! interview featuring Beverly Guy-Sheftall discussing bell hooks's life, legacy, and her concept of interlocking systems of oppression. Her longtime colleague explains how hooks helped people understand the world and eradicate domination.</p>
+                    <a href="https://www.youtube.com/watch?v=DkJKJZU7xXU" target="_blank">→ Watch on YouTube</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>Feminism Is For Everybody: A Guide to bell hooks</h4>
+                    <p>Sisyphus 55 creates an accessible overview of bell hooks's philosophy. Explains her definition of feminism as "the movement to end sexism, sexist exploitation and oppression" and her concept of love as central to liberation and transformation.</p>
+                    <a href="https://www.youtube.com/watch?v=2e3khpPyMg4" target="_blank">→ Watch on YouTube</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">📄 Article/Guide</div>
+                    <h4>Where to Start With bell hooks</h4>
+                    <p>New York Public Library's curated reading guide introducing hooks's major works. Includes *Ain't I A Woman?*, *All About Love*, *Teaching to Transgress*, and *Feminism Is For Everybody*. Perfect starting points for understanding her thought.</p>
+                    <a href="https://www.nypl.org/blog/2021/12/15/where-start-bell-hooks" target="_blank">→ Read on NYPL</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Michel Foucault Resources -->
+        <div id="foucault-resources" class="resources-section">
+            <h2>
+                Michel Foucault: Power, Knowledge & Discipline
+                <button class="close-btn" onclick="closeResources()">Close</button>
+            </h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <div class="resource-type">🔗 Reference</div>
+                    <h4>Michel Foucault: Key Concepts</h4>
+                    <p>Comprehensive overview of Foucault's main ideas including power, knowledge, discipline, surveillance, and biopower. Explains how institutions shape subjects through normalization and self-regulation.</p>
+                    <a href="https://michel-foucault.com/key-concepts/" target="_blank">→ Read on Foucault News</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">📄 Article</div>
+                    <h4>Michel Foucault: Power, Subjectivity and Education</h4>
+                    <p>Infed.org article explaining Foucault's concepts and their application to education. Shows how schools operate as disciplinary institutions that create docile, self-regulating subjects.</p>
+                    <a href="https://infed.org/dir/welcome/michel-foucault-power-subjectivity-and-education/" target="_blank">→ Read on infed.org</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>Foucault Explained Simply</h4>
+                    <p>Great Books Prof breaks down Foucault's complex ideas about power in an accessible way. Visual explanations of his concepts without jargon. Perfect introduction for beginners.</p>
+                    <a href="https://www.youtube.com/watch?v=YXGjEPLJ_e0&t=4s" target="_blank">→ Watch on YouTube</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Antonio Gramsci Resources -->
+        <div id="gramsci-resources" class="resources-section">
+            <h2>
+                Antonio Gramsci: Cultural Hegemony & Common Sense
+                <button class="close-btn" onclick="closeResources()">Close</button>
+            </h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <div class="resource-type">🔗 Reference</div>
+                    <h4>Antonio Gramsci: Hegemony</h4>
+                    <p>Stanford Encyclopedia of Philosophy entry on Gramsci's concept of hegemony. Explains how ruling classes maintain power through cultural consent rather than force, making their worldview seem like "common sense."</p>
+                    <a href="https://plato.stanford.edu/entries/gramsci/#Hege" target="_blank">→ Read on Stanford Encyclopedia</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">📄 Article</div>
+                    <h4>Antonio Gramsci and Cultural Hegemony</h4>
+                    <p>Born Curious blog offers a clear, accessible introduction to Gramsci's ideas about cultural hegemony. Explains how education and culture become tools for maintaining power invisibly.</p>
+                    <a href="https://borncurious.blog/p/antonio-gramsci-and-cultural-hegemony" target="_blank">→ Read on Born Curious</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>WTF? An Introduction to Gramsci and Cultural Hegemony</h4>
+                    <p>Tom Nicholas explains Gramsci's neo-Marxist theory focusing on how cultural domination works through making ruling-class ideology seem natural and inevitable.</p>
+                    <a href="https://www.youtube.com/watch?v=-LI_2-qsovo&t=2s" target="_blank">→ Watch on YouTube</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>Antonio Gramsci and Cultural Hegemony (Makers of the Modern World)</h4>
+                    <p>Explores Gramsci's influence on understanding how ruling classes maintain power through culture and ideology rather than force alone.</p>
+                    <a href="https://www.youtube.com/watch?v=g3XlRCj2H4o&t=2s" target="_blank">→ Watch on YouTube</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Video</div>
+                    <h4>Cultural Hegemony - Episode 131: Gramsci</h4>
+                    <p>Quick overview of how political control operates through cultural domination and the shaping of common sense by dominant groups.</p>
+                    <a href="https://www.youtube.com/watch?v=SugKVZ2XuwU&t=3s" target="_blank">→ Watch on YouTube</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Stuart Hall Resources -->
+        <div id="hall-resources" class="resources-section">
+            <h2>
+                Stuart Hall: Representation & Cultural Studies
+                <button class="close-btn" onclick="closeResources()">Close</button>
+            </h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <div class="resource-type">💬 Interview</div>
+                    <h4>Stuart Hall: Culture and Power (1997)</h4>
+                    <p>Radical Philosophy interview where Hall discusses how culture shapes power relations and why it's important to question dominant narratives and representations.</p>
+                    <a href="https://www.radicalphilosophy.com/interview/stuart-hall-culture-and-power" target="_blank">→ Read on Radical Philosophy</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Herbert Marcuse Resources -->
+        <div id="marcuse-resources" class="resources-section">
+            <h2>
+                Herbert Marcuse: One-Dimensional Society & Culture Industry
+                <button class="close-btn" onclick="closeResources()">Close</button>
+            </h2>
+            <ul class="resource-list">
+                <li class="resource-item">
+                    <div class="resource-type">📄 Article</div>
+                    <h4>One-Dimensional Man Explained Simply</h4>
+                    <p>Cultural Studies Now breaks down Marcuse's critique of modern capitalism. Explains how consumer culture suppresses critical thinking and creates false needs that serve corporate interests.</p>
+                    <a href="https://culturalstudiesnow.blogspot.com/2021/11/one-dimensional-man-explained-simply.html" target="_blank">→ Read on Cultural Studies Now</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Podcast</div>
+                    <h4>Philosophize This! Episode on The Frankfurt School (Enlightenment)</h4>
+                    <p>Stephen West introduces the Frankfurt School's critique of the Enlightenment and consumer capitalism, foundational to understanding Marcuse's work.</p>
+                    <a href="https://www.philosophizethis.org/podcast/frankfurt-enlightenment" target="_blank">→ Listen on Philosophize This!</a>
+                </li>
+
+                <li class="resource-item">
+                    <div class="resource-type">🎥 Podcast</div>
+                    <h4>Philosophize This! Episode #114: The Great Refusal</h4>
+                    <p>Deep dive into Marcuse's concept of "The Great Refusal"—the need for radical rejection of one-dimensional society and personal transformation. Explains resistance to consumer capitalism.</p>
+                    <a href="https://www.philosophizethis.org/podcast/the-great-refusal" target="_blank">→ Listen on Philosophize This!</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Critical Theory Resource Hub</strong> — Resources for secondary and university students learning to read power, institutions, and ideology critically.</p>
+        <p>All external links open in new windows. Resources compiled from academic institutions, educational platforms, and open-access materials.</p>
+    </footer>
+
+    <script>
+        function showResources(thinker) {
+            // Hide all resources sections
+            const allSections = document.querySelectorAll('.resources-section');
+            allSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected resources
+            const resourceId = thinker + '-resources';
+            const selectedSection = document.getElementById(resourceId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+                selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function closeResources() {
+            const allSections = document.querySelectorAll('.resources-section');
+            allSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
